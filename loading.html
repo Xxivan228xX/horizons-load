@@ -2,76 +2,124 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@300;400&display=swap');
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Roboto', sans-serif; }
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; background-color: #000;
+            font-family: 'Roboto', sans-serif;
+            cursor: url('https://cur.cursors-4u.net/games/gam-4/gam372.cur'), auto; /* Кастомний курсор */
+        }
         
+        /* Живий арт: Ефект наближення (Ken Burns) */
         .background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover; background-position: center;
+            animation: kenburns 20s infinite alternate;
             z-index: 1;
         }
 
-        /* Стильний статус розробки в кутку (як у GTA 5) */
-        .dev-status {
-            position: fixed; top: 30px; right: 40px;
-            color: white; text-align: right; z-index: 10;
+        @keyframes kenburns {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
         }
-        .dev-status h1 { 
-            font-family: 'Oswald', sans-serif; font-size: 28px; margin: 0; 
-            text-transform: uppercase; letter-spacing: 2px; color: #ffcc00;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-        }
-        .dev-status p { font-size: 14px; margin: 0; opacity: 0.8; text-transform: uppercase; }
 
-        /* Нижня панель завантаження */
-        .loading-container {
-            position: fixed; bottom: 50px; left: 10%; width: 80%; z-index: 10;
-            text-align: left;
+        /* Віньєтка (затемнення країв) */
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
+            z-index: 2; pointer-events: none;
         }
-        .loading-text {
-            color: white; font-size: 12px; text-transform: uppercase;
-            letter-spacing: 3px; margin-bottom: 8px; opacity: 0.7;
-        }
-        .progress-bg { width: 100%; height: 3px; background: rgba(255,255,255,0.1); overflow: hidden; }
-        .progress-bar { width: 30%; height: 100%; background: #ffcc00; transition: width 0.4s ease; box-shadow: 0 0 10px #ffcc00; }
 
+        /* Контейнер для часточок */
+        #particles-js {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 3; pointer-events: none;
+        }
+
+        /* Логотип з пульсацією */
+        .logo-container {
+            position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+            z-index: 10; text-align: center;
+        }
+        .logo-container h1 {
+            font-family: 'Oswald', sans-serif; font-size: 80px; color: white;
+            margin: 0; text-transform: uppercase; letter-spacing: 10px;
+            text-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 40px rgba(255, 204, 0, 0.8); }
+        }
+
+        /* Картка гравця (Скляна панель) */
+        .player-card {
+            position: fixed; top: 40px; left: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); /* Ефект скла */
+            padding: 15px; border-radius: 15px;
+            display: flex; align-items: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            z-index: 10;
+        }
+        .player-card img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ffcc00; margin-right: 15px; }
+        .player-card span { color: white; font-size: 20px; font-weight: bold; }
+
+        /* Прогрес-бар внизу */
+        .loading-footer {
+            position: fixed; bottom: 40px; width: 100%; text-align: center; z-index: 10;
+        }
+        .bar-bg { width: 60%; height: 4px; background: rgba(255,255,255,0.1); margin: 0 auto; overflow: hidden; }
+        .bar-fill { width: 0%; height: 100%; background: #ffcc00; box-shadow: 0 0 15px #ffcc00; transition: width 0.3s; }
     </style>
 </head>
 <body>
     <div class="background"></div>
+    <div class="vignette"></div>
+    <div id="particles-js"></div>
 
-    <div class="dev-status">
-        <h1>Early Access</h1>
-        <p>Сервер у розробці • 2026</p>
+    <div class="player-card">
+        <img id="avatar" src="https://i.pravatar.cc/150?img=5" alt="Avatar">
+        <span id="username">Гравець</span>
     </div>
 
-    <div class="loading-container">
-        <div class="loading-text">Завантаження ресурсів HorizonsRP...</div>
-        <div class="progress-bg">
-            <div class="progress-bar" id="bar"></div>
-        </div>
+    <div class="logo-container">
+        <h1>HORIZONSRP</h1>
+    </div>
+
+    <div class="loading-footer">
+        <div class="bar-bg"><div class="bar-fill" id="fill"></div></div>
     </div>
 
     <script>
-        // Імітація прогресу для краси (в GMod воно буде працювати автоматично)
-        let width = 0;
-        const bar = document.getElementById('bar');
-        setInterval(() => {
-            if (width < 100) {
-                width += 0.5;
-                bar.style.width = width + '%';
+        // Налаштування часточок (іскри/пил)
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 80 },
+                "color": { "value": "#ffcc00" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 2, "random": true },
+                "move": { "enable": true, "speed": 1, "direction": "top", "random": true, "straight": false }
             }
-        }, 100);
+        });
 
-        // Функція для GMod (автоматичне оновлення прогресу)
-        function SetFilesTotal(total) {}
-        function SetFilesNeeded(needed) {}
-        function DownloadingFile(fileName) {}
+        // Отримання даних Steam (GMod автоматично підставить SteamID)
+        function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
+            document.getElementById('username').innerText = "SteamID: " + steamid;
+            // В реальному GMod тут можна отримати нік через API, поки лишаємо ID
+        }
+
+        // Прогрес завантаження
         function SetStatusChanged(status) {
-            document.querySelector('.loading-text').innerText = status;
+            let fill = document.getElementById('fill');
+            let currentWidth = parseInt(fill.style.width) || 0;
+            if (currentWidth < 100) fill.style.width = (currentWidth + 10) + '%';
         }
     </script>
 </body>
