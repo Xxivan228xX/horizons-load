@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000 url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            font-family: sans-serif;
+            overflow: hidden;
+        }
+
+        .bottom-bar {
+            position: absolute;
+            bottom: 10%;
+            width: 100%;
+            text-align: center;
+        }
+
+        .status {
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.9);
+        }
+
+        .progress-container {
+            width: 60%;
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            margin: 0 auto;
+            border-radius: 5px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #00a2ff;
+            box-shadow: 0 0 10px #00a2ff;
+            border-radius: 5px;
+            transition: width 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <div class="bottom-bar">
+        <div id="status" class="status">Завантаження ігрових даних...</div>
+        <div class="progress-container">
+            <div id="bar" class="progress-bar"></div>
+        </div>
+    </div>
+
+    <script>
+        function SetStatusChanged(status) {
+            document.getElementById('status').innerHTML = status;
+        }
+        function SetFilesNeeded(needed) {
+            // Спрощена логіка смужки
+            var p = Math.floor(Math.random() * 100); 
+            document.getElementById('bar').style.width = p + '%';
+        }
+    </script>
+</body>
+</html>
