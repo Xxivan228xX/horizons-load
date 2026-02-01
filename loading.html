@@ -2,125 +2,113 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@300;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap');
 
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: hidden; background-color: #000;
-            font-family: 'Roboto', sans-serif;
-            cursor: url('https://cur.cursors-4u.net/games/gam-4/gam372.cur'), auto; /* Кастомний курсор */
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Roboto', sans-serif; color: white; }
         
-        /* Живий арт: Ефект наближення (Ken Burns) */
+        /* Фон з ефектом Ken Burns */
         .background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover; background-position: center;
-            animation: kenburns 20s infinite alternate;
+            animation: kenburns 40s infinite alternate ease-in-out;
             z-index: 1;
         }
+        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.15); } }
 
-        @keyframes kenburns {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
-
-        /* Віньєтка (затемнення країв) */
         .vignette {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
             z-index: 2; pointer-events: none;
         }
 
-        /* Контейнер для часточок */
-        #particles-js {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 3; pointer-events: none;
+        /* КНОПКИ СОЦМЕРЕЖ ПРАВОРУЧ */
+        .social-sidebar {
+            position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 20px; z-index: 100;
         }
 
-        /* Логотип з пульсацією */
-        .logo-container {
-            position: fixed; top: 10%; left: 50%; transform: translateX(-50%);
+        .social-btn {
+            width: 60px; height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; text-decoration: none; font-size: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Кольори при наведенні */
+        .social-btn.tg:hover { background: rgba(0, 136, 204, 0.3); border-color: #0088cc; transform: scale(1.1); }
+        .social-btn.dc:hover { background: rgba(88, 101, 242, 0.3); border-color: #5865f2; transform: scale(1.1); }
+
+        /* Верхня панель (Онлайн) */
+        .top-panel {
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px);
+            padding: 15px 40px; border-radius: 15px; border: 1px solid rgba(255, 204, 0, 0.3);
             z-index: 10; text-align: center;
         }
-        .logo-container h1 {
-            font-family: 'Oswald', sans-serif; font-size: 80px; color: white;
-            margin: 0; text-transform: uppercase; letter-spacing: 10px;
-            text-shadow: 0 0 20px rgba(255, 204, 0, 0.6);
-            animation: pulse 3s infinite ease-in-out;
-        }
+        .online-count { font-family: 'Oswald', sans-serif; font-size: 24px; color: #ffcc00; display: block; }
+        .dev-status { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; opacity: 0.8; }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.9; }
-            50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 40px rgba(255, 204, 0, 0.8); }
+        /* Прогрес-бар */
+        .progress-container {
+            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
+            width: 70%; height: 4px; background: rgba(255,255,255,0.1); z-index: 10;
         }
+        .progress-bar { width: 0%; height: 100%; background: #ffcc00; box-shadow: 0 0 15px #ffcc00; transition: width 0.4s; }
 
-        /* Картка гравця (Скляна панель) */
-        .player-card {
-            position: fixed; top: 40px; left: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px); /* Ефект скла */
-            padding: 15px; border-radius: 15px;
-            display: flex; align-items: center;
-            border: 1px solid rgba(255,255,255,0.2);
-            z-index: 10;
-        }
-        .player-card img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ffcc00; margin-right: 15px; }
-        .player-card span { color: white; font-size: 20px; font-weight: bold; }
-
-        /* Прогрес-бар внизу */
-        .loading-footer {
-            position: fixed; bottom: 40px; width: 100%; text-align: center; z-index: 10;
-        }
-        .bar-bg { width: 60%; height: 4px; background: rgba(255,255,255,0.1); margin: 0 auto; overflow: hidden; }
-        .bar-fill { width: 0%; height: 100%; background: #ffcc00; box-shadow: 0 0 15px #ffcc00; transition: width 0.3s; }
+        .tips-container { position: fixed; bottom: 100px; width: 100%; text-align: center; z-index: 10; opacity: 0.8; font-style: italic; }
     </style>
 </head>
 <body>
     <div class="background"></div>
     <div class="vignette"></div>
-    <div id="particles-js"></div>
 
-    <div class="player-card">
-        <img id="avatar" src="https://i.pravatar.cc/150?img=5" alt="Avatar">
-        <span id="username">Гравець</span>
+    <div class="social-sidebar">
+        <a href="https://t.me/horizons_rp" class="social-btn tg" title="Telegram">
+            <i class="fa-brands fa-telegram"></i>
+        </a>
+        <a href="https://discord.gg/horizonsrp" class="social-btn dc" title="Discord">
+            <i class="fa-brands fa-discord"></i>
+        </a>
     </div>
 
-    <div class="logo-container">
-        <h1>HORIZONSRP</h1>
+    <div class="top-panel">
+        <span class="online-count" id="slots">0 / 64 ГРАВЦІВ</span>
+        <span class="dev-status">Сервер у розробці • HorizonsRP</span>
     </div>
 
-    <div class="loading-footer">
-        <div class="bar-bg"><div class="bar-fill" id="fill"></div></div>
+    <div class="tips-container" id="tip">Підключення до серверу...</div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="bar"></div>
     </div>
 
     <script>
-        // Налаштування часточок (іскри/пил)
-        particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 80 },
-                "color": { "value": "#ffcc00" },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true },
-                "size": { "value": 2, "random": true },
-                "move": { "enable": true, "speed": 1, "direction": "top", "random": true, "straight": false }
-            }
-        });
+        const tips = [
+            "Приєднуйтесь до нашої спільноти в Discord та Telegram!",
+            "Слідкуйте за оновленнями проекту HorizonsRP.",
+            "Дякуємо, що обрали наш сервер!"
+        ];
+        let tipIdx = 0;
+        setInterval(() => {
+            tipIdx = (tipIdx + 1) % tips.length;
+            document.getElementById('tip').innerText = tips[tipIdx];
+        }, 5000);
 
-        // Отримання даних Steam (GMod автоматично підставить SteamID)
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
-            document.getElementById('username').innerText = "SteamID: " + steamid;
-            // В реальному GMod тут можна отримати нік через API, поки лишаємо ID
+            document.getElementById('slots').innerText = "0 / " + maxplayers + " ГРАВЦІВ";
         }
 
-        // Прогрес завантаження
-        function SetStatusChanged(status) {
-            let fill = document.getElementById('fill');
-            let currentWidth = parseInt(fill.style.width) || 0;
-            if (currentWidth < 100) fill.style.width = (currentWidth + 10) + '%';
-        }
+        // Автоматичне заповнення бару для вигляду
+        let progress = 0;
+        setInterval(() => { if(progress < 95) { progress += 0.2; document.getElementById('bar').style.width = progress + "%"; } }, 100);
     </script>
 </body>
 </html>
