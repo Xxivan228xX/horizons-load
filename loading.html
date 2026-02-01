@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap');
-
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Roboto', sans-serif; color: white; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Arial', sans-serif; color: white; }
         
-        /* Фон з ефектом Ken Burns */
+        /* Фон з наближенням */
         .background {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover; background-position: center;
-            animation: kenburns 40s infinite alternate ease-in-out;
+            animation: kenburns 30s infinite alternate ease-in-out;
             z-index: 1;
         }
-        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.15); } }
+        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.12); } }
 
         .vignette {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -24,46 +22,37 @@
             z-index: 2; pointer-events: none;
         }
 
-        /* КНОПКИ СОЦМЕРЕЖ ПРАВОРУЧ */
+        /* КНОПКИ ПРАВОРУЧ */
         .social-sidebar {
-            position: fixed; right: 30px; top: 50%; transform: translateY(-50%);
+            position: fixed; right: 40px; top: 50%; transform: translateY(-50%);
             display: flex; flex-direction: column; gap: 20px; z-index: 100;
         }
 
         .social-btn {
-            width: 60px; height: 60px;
-            background: rgba(255, 255, 255, 0.05);
+            width: 55px; height: 55px;
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
+            border: 1px solid rgba(255, 204, 0, 0.4);
+            border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
             color: white; text-decoration: none; font-size: 24px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
         }
+        .social-btn:hover { transform: scale(1.1); border-color: #ffcc00; background: rgba(0,0,0,0.8); }
 
-        /* Кольори при наведенні */
-        .social-btn.tg:hover { background: rgba(0, 136, 204, 0.3); border-color: #0088cc; transform: scale(1.1); }
-        .social-btn.dc:hover { background: rgba(88, 101, 242, 0.3); border-color: #5865f2; transform: scale(1.1); }
-
-        /* Верхня панель (Онлайн) */
+        /* Верхня панель (як на твоїх фото) */
         .top-panel {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px);
-            padding: 15px 40px; border-radius: 15px; border: 1px solid rgba(255, 204, 0, 0.3);
+            padding: 12px 35px; border-radius: 15px; border: 1px solid rgba(255, 204, 0, 0.3);
             z-index: 10; text-align: center;
         }
-        .online-count { font-family: 'Oswald', sans-serif; font-size: 24px; color: #ffcc00; display: block; }
-        .dev-status { font-size: 10px; text-transform: uppercase; letter-spacing: 3px; opacity: 0.8; }
+        .online-count { font-size: 24px; font-weight: bold; color: #ffcc00; display: block; }
+        .dev-status { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
 
-        /* Прогрес-бар */
-        .progress-container {
-            position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%);
-            width: 70%; height: 4px; background: rgba(255,255,255,0.1); z-index: 10;
-        }
-        .progress-bar { width: 0%; height: 100%; background: #ffcc00; box-shadow: 0 0 15px #ffcc00; transition: width 0.4s; }
-
-        .tips-container { position: fixed; bottom: 100px; width: 100%; text-align: center; z-index: 10; opacity: 0.8; font-style: italic; }
+        .tips { position: fixed; bottom: 120px; width: 100%; text-align: center; z-index: 10; font-style: italic; opacity: 0.8; }
+        .progress-bg { position: fixed; bottom: 50px; left: 15%; width: 70%; height: 3px; background: rgba(255,255,255,0.1); z-index: 10; }
+        .progress-bar { width: 30%; height: 100%; background: #ffcc00; box-shadow: 0 0 10px #ffcc00; }
     </style>
 </head>
 <body>
@@ -71,10 +60,10 @@
     <div class="vignette"></div>
 
     <div class="social-sidebar">
-        <a href="https://t.me/horizons_rp" class="social-btn tg" title="Telegram">
+        <a href="https://t.me/horizons_rp" class="social-btn" title="Telegram">
             <i class="fa-brands fa-telegram"></i>
         </a>
-        <a href="https://discord.gg/horizonsrp" class="social-btn dc" title="Discord">
+        <a href="https://discord.gg/horizonsrp" class="social-btn" title="Discord">
             <i class="fa-brands fa-discord"></i>
         </a>
     </div>
@@ -84,31 +73,13 @@
         <span class="dev-status">Сервер у розробці • HorizonsRP</span>
     </div>
 
-    <div class="tips-container" id="tip">Підключення до серверу...</div>
-
-    <div class="progress-container">
-        <div class="progress-bar" id="bar"></div>
-    </div>
+    <div class="tips">Підготовка до гри...</div>
+    <div class="progress-bg"><div class="progress-bar"></div></div>
 
     <script>
-        const tips = [
-            "Приєднуйтесь до нашої спільноти в Discord та Telegram!",
-            "Слідкуйте за оновленнями проекту HorizonsRP.",
-            "Дякуємо, що обрали наш сервер!"
-        ];
-        let tipIdx = 0;
-        setInterval(() => {
-            tipIdx = (tipIdx + 1) % tips.length;
-            document.getElementById('tip').innerText = tips[tipIdx];
-        }, 5000);
-
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
             document.getElementById('slots').innerText = "0 / " + maxplayers + " ГРАВЦІВ";
         }
-
-        // Автоматичне заповнення бару для вигляду
-        let progress = 0;
-        setInterval(() => { if(progress < 95) { progress += 0.2; document.getElementById('bar').style.width = progress + "%"; } }, 100);
     </script>
 </body>
 </html>
