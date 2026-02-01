@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <style>
@@ -7,23 +7,23 @@
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            background-color: #242424; /* ТОЙ САМИЙ СІРИЙ КОЛІР ЯК У ГРІ */
-            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #2c2c2c; /* ТОЧНИЙ СІРИЙ КОЛІР ВІКНА GMOD */
+            font-family: Arial, sans-serif;
         }
         .background {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 78%; /* Картинка зверху */
+            width: 100%; height: 88%; /* ПІДНЯЛИ КАРТИНКУ: тепер плашка стала вужчою */
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover;
             background-position: center;
-            border-bottom: 2px solid #333;
+            border-bottom: 1px solid #3a3a3a;
         }
         .quote-panel {
             position: fixed;
             bottom: 0; left: 0;
-            width: 100%; height: 22%; /* Сіра зона знизу */
-            background-color: #242424;
+            width: 100%; height: 12%; /* ЗМЕНШИЛИ ВИСОТУ: тепер вона акуратна */
+            background-color: #2c2c2c; /* Збігається з віконцем у куті */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -33,18 +33,20 @@
             box-sizing: border-box;
         }
         .label {
-            color: #00a2ff; /* Блакитний колір для заголовку */
-            font-size: 14px;
+            color: #00a2ff;
+            font-size: 11px; /* Трохи менший текст заголовка */
             text-transform: uppercase;
             font-weight: bold;
-            margin-bottom: 5px;
-            letter-spacing: 2px;
+            margin-bottom: 3px;
+            letter-spacing: 1.5px;
+            opacity: 0.8;
         }
         #quote {
-            font-size: 20px;
+            font-size: 17px; /* Оптимальний розмір для цитат */
             text-align: center;
-            max-width: 800px;
+            max-width: 900px;
             transition: opacity 0.5s;
+            color: #dcdcdc;
         }
     </style>
 </head>
@@ -52,7 +54,7 @@
     <div class="background"></div>
     <div class="quote-panel">
         <div class="label">Порада від HorizonsRP:</div>
-        <div id="quote">Завантажуємо цікаві факти про сервер...</div>
+        <div id="quote">Підключення до сервера...</div>
     </div>
 
     <script>
@@ -78,7 +80,7 @@
             }, 500);
         }
 
-        setInterval(change, 6000); // Зміна цитати кожні 6 секунд
+        setInterval(change, 6000); 
         setTimeout(() => { qElem.innerText = tips[0]; }, 100);
     </script>
 </body>
