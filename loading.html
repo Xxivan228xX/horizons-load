@@ -2,77 +2,109 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
+    <title>HorizonsRP Loading</title>
     <style>
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            background-color: #767b81; /* ЩЕ СВІТЛІШИЙ СІРИЙ */
-            font-family: Arial, sans-serif;
+            background-color: #000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
+        /* Твоя картинка на весь екран */
         .background {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 95%; /* КАРТИНКА ТЕПЕР ЗАЙМАЄ 95% */
-            background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
+            width: 100%; height: 100%;
+            background-image: url('https://i.postimg.cc/mD8p43S3/image.png');
             background-size: cover;
             background-position: center;
-            z-index: 1;
+            z-index: -1;
         }
-        .quote-panel {
+
+        /* Затемнення знизу, щоб текст було видно */
+        .overlay {
             position: fixed;
-            bottom: 0; left: 0;
-            width: 100%; height: 5%; /* ВИСОТА ТЕПЕР ЛИШЕ 5% */
-            background-color: #767b81; /* Світлий колір під стандартне вікно */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #ffffff;
-            z-index: 2;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            bottom: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            z-index: 0;
         }
-        #quote {
-            font-size: 15px; /* Трохи менший шрифт для вузької панелі */
+
+        /* Контейнер завантаження */
+        .loader-wrapper {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
             text-align: center;
-            max-width: 95%;
-            transition: opacity 0.5s;
-            color: #ffffff;
-            font-weight: bold;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .status-text {
+            color: white;
+            font-size: 18px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,1);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: #00a2ff;
+            box-shadow: 0 0 15px #00a2ff;
+            transition: width 0.3s ease;
         }
     </style>
 </head>
 <body>
+
     <div class="background"></div>
-    <div class="quote-panel">
-        <div id="quote">Завантаження HorizonsRP...</div>
+    <div class="overlay"></div>
+
+    <div class="loader-wrapper">
+        <div id="status" class="status-text">Завантаження ігрових даних...</div>
+        <div class="progress-bar-bg">
+            <div id="bar" class="progress-bar-fill"></div>
+        </div>
     </div>
 
     <script>
-        const tips = [
-            "Хочеш швидких грошей? Спробуй влаштуватися кур'єром або водієм автобуса!",
-            "Пам'ятай: твоє життя — найцінніше. Дотримуйся правил FearRP.",
-            "На сервері діє система банд — збирай команду та тримай район у страху.",
-            "Потрібна допомога адміністрації? Пиши команду /report у чат.",
-            "Не забувай заглядати в мерію, щоб отримати паспорт та ліцензії.",
-            "Кожен твій вчинок впливає на історію твого персонажа. Грай чесно!",
-            "Знайшов баг? Повідом про нього адмінам і отримай бонус."
-        ];
-
-        let i = 0;
-        const qElem = document.getElementById('quote');
-
-        function change() {
-            qElem.style.opacity = 0;
-            setTimeout(() => {
-                i = (i + 1) % tips.length;
-                qElem.innerText = tips[i];
-                qElem.style.opacity = 1;
-            }, 500);
+        // Функції для зв'язку з Garry's Mod
+        var totalFiles = 1;
+        
+        function SetFilesTotal(total) {
+            totalFiles = total;
         }
 
-        setInterval(change, 6000); 
-        setTimeout(() => { qElem.innerText = tips[0]; }, 100);
+        function SetFilesNeeded(needed) {
+            var filesLeft = Math.max(0, needed);
+            var progress = ((totalFiles - filesLeft) / totalFiles) * 100;
+            document.getElementById('bar').style.width = progress + '%';
+        }
+
+        function SetStatusChanged(status) {
+            // Переклад статусів на українську, якщо хочеш
+            if (status.indexOf("Getting Addon") !== -1) status = "Завантаження аддонів...";
+            if (status.indexOf("Sending client info") !== -1) status = "Надсилання даних клієнта...";
+            if (status.indexOf("Mounting Addons") !== -1) status = "Підключення контенту...";
+            
+            document.getElementById('status').innerText = status;
+        }
     </script>
+
 </body>
 </html>
