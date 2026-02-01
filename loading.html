@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html>
 <head>
     <meta charset="UTF-8">
     <style>
@@ -7,87 +7,79 @@
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            background-color: #242424; /* Справжній сірий колір GMod */
+            background-color: #242424; /* ТОЙ САМИЙ СІРИЙ КОЛІР ЯК У ГРІ */
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
         .background {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 80%; /* Картинка займає 80% екрана */
+            width: 100%; height: 78%; /* Картинка зверху */
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover;
             background-position: center;
-            z-index: 1;
+            border-bottom: 2px solid #333;
         }
-        .bottom-panel {
+        .quote-panel {
             position: fixed;
             bottom: 0; left: 0;
-            width: 100%; height: 20%; /* Нижня сіра зона */
-            background-color: #242424; /* Колір під віконце в кутку */
+            width: 100%; height: 22%; /* Сіра зона знизу */
+            background-color: #242424;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 2;
-            border-top: 2px solid #333;
+            color: #ffffff;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
-        #quote-box {
-            color: #ddd;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 0 50px;
-        }
-        .quote-label {
-            color: #00a2ff; /* Блакитний акцент */
+        .label {
+            color: #00a2ff; /* Блакитний колір для заголовку */
             font-size: 14px;
             text-transform: uppercase;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             letter-spacing: 2px;
         }
-        #quote-text {
+        #quote {
             font-size: 20px;
-            font-style: italic;
-            transition: opacity 0.5s ease;
+            text-align: center;
+            max-width: 800px;
+            transition: opacity 0.5s;
         }
     </style>
 </head>
 <body>
     <div class="background"></div>
-
-    <div class="bottom-panel">
-        <div id="quote-box">
-            <div class="quote-label">Чи знаєте ви?</div>
-            <div id="quote-text">Завантаження HorizonsRP...</div>
-        </div>
+    <div class="quote-panel">
+        <div class="label">Порада від HorizonsRP:</div>
+        <div id="quote">Завантажуємо цікаві факти про сервер...</div>
     </div>
 
     <script>
-        const quotes = [
-            "На HorizonsRP ти можеш стати ким завгодно: від простого роботяги до мера міста.",
-            "Наші адміни завжди в мережі та готові допомогти — пиши в /report.",
-            "Порушення правил RP псує гру всім. Будь відповідальним гравцем!",
-            "Унікальна система банд дозволяє тобі захоплювати райони та диктувати свої правила.",
-            "Заробити перші гроші можна на законних роботах або ризикуючи в криміналі.",
-            "Дякуємо, що обираєш наш сервер! Приємної гри!"
+        const tips = [
+            "Хочеш швидких грошей? Спробуй влаштуватися кур'єром або водієм автобуса!",
+            "Пам'ятай: твоє життя — найцінніше. Дотримуйся правил FearRP.",
+            "На сервері діє система банд — збирай команду та тримай район у страху.",
+            "Потрібна допомога адміністрації? Пиши команду /report у чат.",
+            "Не забувай заглядати в мерію, щоб отримати паспорт та ліцензії.",
+            "Кожен твій вчинок впливає на історію твого персонажа. Грай чесно!",
+            "Знайшов баг? Повідом про нього адмінам і отримай бонус."
         ];
 
-        let current = 0;
-        const textElement = document.getElementById('quote-text');
+        let i = 0;
+        const qElem = document.getElementById('quote');
 
-        function rotateQuote() {
-            textElement.style.opacity = 0;
+        function change() {
+            qElem.style.opacity = 0;
             setTimeout(() => {
-                current = (current + 1) % quotes.length;
-                textElement.innerText = quotes[current];
-                textElement.style.opacity = 1;
+                i = (i + 1) % tips.length;
+                qElem.innerText = tips[i];
+                qElem.style.opacity = 1;
             }, 500);
         }
 
-        // Міняємо цитату кожні 7 секунд
-        setInterval(rotateQuote, 7000);
-        
-        // Встановлюємо першу фразу через секунду після завантаження
-        setTimeout(() => { textElement.innerText = quotes[0]; }, 1000);
+        setInterval(change, 6000); // Зміна цитати кожні 6 секунд
+        setTimeout(() => { qElem.innerText = tips[0]; }, 100);
     </script>
 </body>
 </html>
