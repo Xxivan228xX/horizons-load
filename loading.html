@@ -8,91 +8,69 @@
 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Roboto', sans-serif; color: white; }
         
-        /* 1. Живий арт + Overlay (Бліки) */
-        .background-wrapper {
-            position: fixed; width: 100%; height: 100%;
-            z-index: 1; overflow: hidden;
-        }
+        /* Фон та ефекти */
+        .background-wrapper { position: fixed; width: 100%; height: 100%; z-index: 1; overflow: hidden; }
         .background {
             width: 100%; height: 100%;
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover; background-position: center;
             animation: kenburns 40s infinite alternate ease-in-out;
         }
-        /* Ефект бліку/плівки */
         .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, rgba(255,255,255,0.03) 0%, transparent 50%, rgba(255,255,255,0.03) 100%);
-            pointer-events: none; z-index: 2;
-            animation: flare 10s infinite linear;
+            background: linear-gradient(45deg, rgba(255,255,255,0.02) 0%, transparent 50%, rgba(255,255,255,0.02) 100%);
+            pointer-events: none; z-index: 2; animation: flare 8s infinite linear;
         }
-
         @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.15); } }
-        @keyframes flare { 0% { opacity: 0.3; } 50% { opacity: 0.6; } 100% { opacity: 0.3; } }
+        @keyframes flare { 0% { opacity: 0.2; } 50% { opacity: 0.5; } 100% { opacity: 0.2; } }
 
         .vignette {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
             z-index: 3; pointer-events: none;
         }
 
-        /* 2. Картка вітання (Steam Data) */
+        /* КАРТКА ГРАВЦЯ З НОВОЮ ІКОНКОЮ */
         .player-card {
             position: fixed; top: 30px; left: 40px;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);
-            padding: 10px 20px; border-radius: 50px 15px 15px 50px;
-            border: 1px solid rgba(255, 204, 0, 0.3);
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(12px);
+            padding: 10px 25px 10px 10px; border-radius: 60px 20px 20px 60px;
+            border: 1px solid rgba(255, 204, 0, 0.4);
             display: flex; align-items: center; z-index: 10;
         }
-        .player-card img {
-            width: 50px; height: 50px; border-radius: 50%;
-            border: 2px solid #ffcc00; box-shadow: 0 0 10px #ffcc00; margin-right: 15px;
+        .hrp-icon {
+            width: 65px; height: 65px; border-radius: 50%;
+            border: 2px solid #ffcc00; 
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.6); 
+            margin-right: 15px;
+            animation: icon-pulse 2s infinite ease-in-out;
         }
-        .player-info span { display: block; font-size: 14px; font-weight: bold; color: #ffcc00; }
-        .player-info p { margin: 0; font-size: 11px; opacity: 0.8; text-transform: uppercase; }
+        @keyframes icon-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 204, 0, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
+        }
 
-        /* 3. Слайдер новин (Зліва знизу) */
-        .news-slider {
-            position: fixed; bottom: 120px; left: 40px;
-            width: 300px; background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px); border-left: 4px solid #ffcc00;
-            padding: 15px; z-index: 10;
-        }
-        .news-header { font-size: 10px; letter-spacing: 2px; color: #ffcc00; margin-bottom: 5px; text-transform: uppercase; }
-        .news-content { font-size: 14px; line-height: 1.4; transition: 0.5s; }
+        /* Інші елементи (соцмережі, новини тощо) */
+        .social-sidebar { position: fixed; right: 40px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 15px; z-index: 100; }
+        .social-btn { width: 55px; height: 55px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 204, 0, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 22px; transition: 0.4s; }
+        .social-btn:hover { border-color: #ffcc00; transform: scale(1.1); }
 
-        /* Соціальні кнопки (Праворуч) */
-        .social-sidebar {
-            position: fixed; right: 40px; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 15px; z-index: 100;
-        }
-        .social-btn {
-            width: 50px; height: 50px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            color: white; text-decoration: none; font-size: 20px; transition: 0.3s;
-        }
-        .social-btn:hover { border-color: #ffcc00; transform: translateX(-5px); }
-
-        /* Прогрес бар та Онлайн */
+        .news-slider { position: fixed; bottom: 120px; left: 40px; width: 320px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border-left: 4px solid #ffcc00; padding: 15px 20px; z-index: 10; }
         .bottom-info { position: fixed; bottom: 40px; width: 100%; text-align: center; z-index: 10; }
-        .online-text { font-family: 'Oswald', sans-serif; font-size: 20px; color: #ffcc00; margin-bottom: 10px; display: block; }
-        .bar-bg { width: 60%; height: 3px; background: rgba(255,255,255,0.1); margin: 0 auto; overflow: hidden; }
-        .bar-fill { width: 20%; height: 100%; background: #ffcc00; box-shadow: 0 0 15px #ffcc00; transition: 0.5s; }
+        .bar-bg { width: 65%; height: 3px; background: rgba(255,255,255,0.1); margin: 0 auto; border-radius: 5px; overflow: hidden; }
+        .bar-fill { width: 20%; height: 100%; background: #ffcc00; box-shadow: 0 0 20px #ffcc00; transition: 0.6s; }
     </style>
 </head>
 <body>
-    <div class="background-wrapper">
-        <div class="background"></div>
-        <div class="overlay"></div>
-    </div>
+    <div class="background-wrapper"><div class="background"></div><div class="overlay"></div></div>
     <div class="vignette"></div>
 
     <div class="player-card">
-        <img id="avatar" src="https://i.imgur.com/86n79N9.png" alt="Avatar">
+        <img class="hrp-icon" src="https://i.postimg.cc/Tw4RGXnD/Photos-vj7GXHEgd-O.png" alt="HRP Icon">
         <div class="player-info">
-            <span id="username">ЗАВАНТАЖЕННЯ...</span>
-            <p>Вітаємо на HorizonsRP!</p>
+            <span id="username" style="color: #ffcc00; font-weight: bold;">ЗАВАНТАЖЕННЯ...</span>
+            <p style="font-size: 11px; opacity: 0.8; margin: 0;">HorizonsRP • 2026</p>
         </div>
     </div>
 
@@ -102,46 +80,19 @@
     </div>
 
     <div class="news-slider">
-        <div class="news-header">Новини проекту</div>
-        <div id="news" class="news-content">Підключення до бази даних...</div>
+        <div style="font-size: 10px; color: #ffcc00; margin-bottom: 5px;">НОВИНИ</div>
+        <div id="news">Система автосалонів готова на 100% 🚗</div>
     </div>
 
     <div class="bottom-info">
-        <span class="online-text" id="slots">0 / 64 ГРАВЦІВ ОНЛАЙН</span>
+        <span id="slots" style="font-family: 'Oswald'; font-size: 20px; color: #ffcc00; margin-bottom: 10px; display: block;">0 / 64 ГРАВЦІВ</span>
         <div class="bar-bg"><div class="bar-fill" id="bar"></div></div>
     </div>
 
     <script>
-        // Слайдер новин
-        const newsItems = [
-            "Додано нову систему автосалонів 🚗",
-            "Вже готово 80% мапи проекту 🗺️",
-            "Відкриття зовсім скоро! Слідкуйте за новинами ⚡",
-            "Нова система фракцій вже в розробці 🚔"
-        ];
-        let newsIdx = 0;
-        setInterval(() => {
-            newsIdx = (newsIdx + 1) % newsItems.length;
-            document.getElementById('news').style.opacity = 0;
-            setTimeout(() => {
-                document.getElementById('news').innerText = newsItems[newsIdx];
-                document.getElementById('news').style.opacity = 1;
-            }, 500);
-        }, 5000);
-
-        // Дані з GMod
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
-            document.getElementById('slots').innerText = "0 / " + maxplayers + " ГРАВЦІВ ОНЛАЙН";
-            
-            // Якщо є можливість, отримуємо нік (SteamID вже доступний)
-            if(steamid) {
-                document.getElementById('username').innerText = "ГРАВЕЦЬ " + steamid;
-            }
-        }
-
-        function SetStatusChanged(status) {
-            if(status.includes("Workshop")) document.getElementById('bar').style.width = "40%";
-            if(status.includes("Sending")) document.getElementById('bar').style.width = "95%";
+            document.getElementById('slots').innerText = "0 / " + maxplayers + " ГРАВЦІВ";
+            if(steamid) document.getElementById('username').innerText = "ГРАВЕЦЬ " + steamid;
         }
     </script>
 </body>
