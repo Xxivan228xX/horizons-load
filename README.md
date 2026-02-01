@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>HorizonsRP Loading</title>
+    <style>
+        /* Ховаємо все стандартне, що можна перекрити */
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background-color: #000; /* Чорний фон, щоб не було білого при завантаженні */
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        /* Твоя якісна картинка на весь екран */
+        .background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 1; /* Ставимо поверх стандартного фону GMod */
+        }
+
+        /* Затемнення знизу, щоб перекрити сіру смужку GMod */
+        .overlay {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, transparent 100%);
+            z-index: 2;
+        }
+
+        .loader-wrapper {
+            position: fixed;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .status-text {
+            color: #ffffff;
+            font-size: 22px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0,0,0,1);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: #00a2ff;
+            box-shadow: 0 0 20px rgba(0, 162, 255, 0.8);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="overlay"></div>
+
+    <div class="loader-wrapper">
+        <div id="status" class="status-text">Підключення до HorizonsRP...</div>
+        <div class="progress-bar-bg">
+            <div id="bar" class="progress-bar-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        var total = 100;
+        function SetFilesTotal(t) { total = t; }
+        function SetFilesNeeded(n) {
+            var progress = ((total - n) / total) * 100;
+            document.getElementById('bar').style.width = progress + '%';
+        }
+        function SetStatusChanged(s) {
+            if (s.includes("Getting Addon")) s = "Завантаження контенту...";
+            if (s.includes("Mounting")) s = "Підготовка сервера...";
+            if (s.includes("Sending client info")) s = "Вхід у гру...";
+            document.getElementById('status').innerText = s;
+        }
+    </script>
+</body>
+</html>
