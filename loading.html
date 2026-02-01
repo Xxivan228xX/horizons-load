@@ -7,52 +7,87 @@
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            background-color: #000;
+            background-color: #242424; /* Справжній сірий колір GMod */
         }
         .background {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 100%;
+            width: 100%; height: 80%; /* Картинка займає 80% екрана */
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover;
             background-position: center;
-            z-index: 100; /* Піднімаємо картинку вище */
+            z-index: 1;
         }
-        /* Глибоке затемнення знизу, щоб "сховати" сіру смужку в темряві */
-        .bottom-hide {
+        .bottom-panel {
             position: fixed;
-            bottom: 0;
-            width: 100%;
-            height: 120px;
-            background: #000;
-            z-index: 101;
+            bottom: 0; left: 0;
+            width: 100%; height: 20%; /* Нижня сіра зона */
+            background-color: #242424; /* Колір під віконце в кутку */
             display: flex;
-            align-items: center;
-            justify-content: center;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            border-top: 2px solid #333;
         }
-        .status-text {
-            color: white;
-            font-family: sans-serif;
-            font-size: 18px;
-            font-weight: bold;
+        #quote-box {
+            color: #ddd;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 0 50px;
+        }
+        .quote-label {
+            color: #00a2ff; /* Блакитний акцент */
+            font-size: 14px;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
         }
-        .bar-bg { width: 60%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; }
-        #bar { width: 0%; height: 100%; background: #00a2ff; transition: 0.3s; }
+        #quote-text {
+            font-size: 20px;
+            font-style: italic;
+            transition: opacity 0.5s ease;
+        }
     </style>
 </head>
 <body>
     <div class="background"></div>
-    <div class="bottom-hide">
-        <div id="status" class="status-text">Завантаження HorizonsRP...</div>
-        <div class="bar-bg"><div id="bar"></div></div>
+
+    <div class="bottom-panel">
+        <div id="quote-box">
+            <div class="quote-label">Чи знаєте ви?</div>
+            <div id="quote-text">Завантаження HorizonsRP...</div>
+        </div>
     </div>
+
     <script>
-        function SetStatusChanged(s) { document.getElementById('status').innerText = s; }
-        function SetFilesNeeded(n) { document.getElementById('bar').style.width = Math.random()*100+'%'; }
+        const quotes = [
+            "На HorizonsRP ти можеш стати ким завгодно: від простого роботяги до мера міста.",
+            "Наші адміни завжди в мережі та готові допомогти — пиши в /report.",
+            "Порушення правил RP псує гру всім. Будь відповідальним гравцем!",
+            "Унікальна система банд дозволяє тобі захоплювати райони та диктувати свої правила.",
+            "Заробити перші гроші можна на законних роботах або ризикуючи в криміналі.",
+            "Дякуємо, що обираєш наш сервер! Приємної гри!"
+        ];
+
+        let current = 0;
+        const textElement = document.getElementById('quote-text');
+
+        function rotateQuote() {
+            textElement.style.opacity = 0;
+            setTimeout(() => {
+                current = (current + 1) % quotes.length;
+                textElement.innerText = quotes[current];
+                textElement.style.opacity = 1;
+            }, 500);
+        }
+
+        // Міняємо цитату кожні 7 секунд
+        setInterval(rotateQuote, 7000);
+        
+        // Встановлюємо першу фразу через секунду після завантаження
+        setTimeout(() => { textElement.innerText = quotes[0]; }, 1000);
     </script>
 </body>
 </html>
-
