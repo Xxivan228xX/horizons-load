@@ -7,54 +7,44 @@
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            background-color: #2c2c2c; /* ТОЧНИЙ СІРИЙ КОЛІР ВІКНА GMOD */
+            background-color: #4e5359; /* ТОЧНИЙ КОЛІР З ТВОГО СКРІНШОТУ */
             font-family: Arial, sans-serif;
         }
         .background {
             position: fixed;
             top: 0; left: 0;
-            width: 100%; height: 88%; /* ПІДНЯЛИ КАРТИНКУ: тепер плашка стала вужчою */
+            width: 100%; height: 92%; /* ЗРОБИЛИ КАРТИНКУ ЩЕ БІЛЬШОЮ */
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover;
             background-position: center;
-            border-bottom: 1px solid #3a3a3a;
+            z-index: 1;
         }
         .quote-panel {
             position: fixed;
             bottom: 0; left: 0;
-            width: 100%; height: 12%; /* ЗМЕНШИЛИ ВИСОТУ: тепер вона акуратна */
-            background-color: #2c2c2c; /* Збігається з віконцем у куті */
+            width: 100%; height: 8%; /* МІНІМАЛЬНА ВИСОТА ПЛАШКИ */
+            background-color: #4e5359; /* Ідеальний збіг з вікном GMod */
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             color: #ffffff;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-        .label {
-            color: #00a2ff;
-            font-size: 11px; /* Трохи менший текст заголовка */
-            text-transform: uppercase;
-            font-weight: bold;
-            margin-bottom: 3px;
-            letter-spacing: 1.5px;
-            opacity: 0.8;
+            z-index: 2;
         }
         #quote {
-            font-size: 17px; /* Оптимальний розмір для цитат */
+            font-size: 16px;
             text-align: center;
-            max-width: 900px;
+            max-width: 90%;
             transition: opacity 0.5s;
-            color: #dcdcdc;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
     <div class="background"></div>
     <div class="quote-panel">
-        <div class="label">Порада від HorizonsRP:</div>
-        <div id="quote">Підключення до сервера...</div>
+        <div id="quote">Завантаження HorizonsRP...</div>
     </div>
 
     <script>
