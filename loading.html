@@ -2,18 +2,13 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>HorizonsRP Loading</title>
     <style>
-        /* Ховаємо все стандартне, що можна перекрити */
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            background-color: #000; /* Чорний фон, щоб не було білого при завантаженні */
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: #000;
         }
-
-        /* Твоя якісна картинка на весь екран */
         .background {
             position: fixed;
             top: 0; left: 0;
@@ -21,80 +16,42 @@
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover;
             background-position: center;
-            z-index: 1; /* Ставимо поверх стандартного фону GMod */
+            z-index: 100; /* Піднімаємо картинку вище */
         }
-
-        /* Затемнення знизу, щоб перекрити сіру смужку GMod */
-        .overlay {
+        /* Глибоке затемнення знизу, щоб "сховати" сіру смужку в темряві */
+        .bottom-hide {
             position: fixed;
             bottom: 0;
             width: 100%;
-            height: 30%;
-            background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, transparent 100%);
-            z-index: 2;
+            height: 120px;
+            background: #000;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
-
-        .loader-wrapper {
-            position: fixed;
-            bottom: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70%;
-            text-align: center;
-            z-index: 10;
-        }
-
         .status-text {
-            color: #ffffff;
-            font-size: 22px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
+            color: white;
+            font-family: sans-serif;
+            font-size: 18px;
             font-weight: bold;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 10px rgba(0,0,0,1);
+            text-transform: uppercase;
+            margin-bottom: 10px;
         }
-
-        .progress-bar-bg {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            width: 0%;
-            height: 100%;
-            background: #00a2ff;
-            box-shadow: 0 0 20px rgba(0, 162, 255, 0.8);
-            transition: width 0.3s ease;
-        }
+        .bar-bg { width: 60%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; }
+        #bar { width: 0%; height: 100%; background: #00a2ff; transition: 0.3s; }
     </style>
 </head>
 <body>
     <div class="background"></div>
-    <div class="overlay"></div>
-
-    <div class="loader-wrapper">
-        <div id="status" class="status-text">Підключення до HorizonsRP...</div>
-        <div class="progress-bar-bg">
-            <div id="bar" class="progress-bar-fill"></div>
-        </div>
+    <div class="bottom-hide">
+        <div id="status" class="status-text">Завантаження HorizonsRP...</div>
+        <div class="bar-bg"><div id="bar"></div></div>
     </div>
-
     <script>
-        var total = 100;
-        function SetFilesTotal(t) { total = t; }
-        function SetFilesNeeded(n) {
-            var progress = ((total - n) / total) * 100;
-            document.getElementById('bar').style.width = progress + '%';
-        }
-        function SetStatusChanged(s) {
-            if (s.includes("Getting Addon")) s = "Завантаження контенту...";
-            if (s.includes("Mounting")) s = "Підготовка сервера...";
-            if (s.includes("Sending client info")) s = "Вхід у гру...";
-            document.getElementById('status').innerText = s;
-        }
+        function SetStatusChanged(s) { document.getElementById('status').innerText = s; }
+        function SetFilesNeeded(n) { document.getElementById('bar').style.width = Math.random()*100+'%'; }
     </script>
 </body>
 </html>
