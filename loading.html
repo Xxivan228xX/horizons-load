@@ -1,68 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>HorizonsRP Loading</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: #000 url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png') no-repeat center center fixed;
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        /* Твій фон PNG */
+        .background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover;
-            color: white;
-            font-family: sans-serif;
+            background-position: center;
+            z-index: -1;
+        }
+
+        /* Тінь знизу для чіткості тексту */
+        .overlay {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+            z-index: 0;
+        }
+
+        /* Контейнер прогресу */
+        .loader-wrapper {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 65%;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .status-text {
+            color: #ffffff;
+            font-size: 20px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-shadow: 0px 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
             overflow: hidden;
         }
 
-        .bottom-bar {
-            position: absolute;
-            bottom: 10%;
-            width: 100%;
-            text-align: center;
-        }
-
-        .status {
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.9);
-        }
-
-        .progress-container {
-            width: 60%;
-            height: 10px;
-            background: rgba(255,255,255,0.1);
-            margin: 0 auto;
-            border-radius: 5px;
-        }
-
-        .progress-bar {
+        .progress-bar-fill {
             width: 0%;
             height: 100%;
             background: #00a2ff;
-            box-shadow: 0 0 10px #00a2ff;
-            border-radius: 5px;
-            transition: width 0.2s;
+            box-shadow: 0 0 15px rgba(0, 162, 255, 0.7);
+            transition: width 0.4s ease;
         }
     </style>
 </head>
 <body>
-    <div class="bottom-bar">
-        <div id="status" class="status">Завантаження ігрових даних...</div>
-        <div class="progress-container">
-            <div id="bar" class="progress-bar"></div>
+
+    <div class="background"></div>
+    <div class="overlay"></div>
+
+    <div class="loader-wrapper">
+        <div id="status" class="status-text">Завантаження ігрових даних...</div>
+        <div class="progress-bg">
+            <div class="progress-bar-bg">
+                <div id="bar" class="progress-bar-fill"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        function SetStatusChanged(status) {
-            document.getElementById('status').innerHTML = status;
+        var filesTotal = 1;
+
+        function SetFilesTotal(total) {
+            filesTotal = Math.max(1, total);
         }
+
         function SetFilesNeeded(needed) {
-            // Спрощена логіка смужки
-            var p = Math.floor(Math.random() * 100); 
-            document.getElementById('bar').style.width = p + '%';
+            var filesLeft = Math.max(0, needed);
+            var progress = ((filesTotal - filesLeft) / filesTotal) * 100;
+            document.getElementById('bar').style.width = progress + '%';
+        }
+
+        function SetStatusChanged(status) {
+            // Українізація системних повідомлень GMod
+            if (status.includes("Getting Addon")) status = "Завантаження додатків...";
+            if (status.includes("Sending client info")) status = "Надсилання даних клієнта...";
+            if (status.includes("Mounting Addons")) status = "Підключення контенту...";
+            if (status.includes("Workshop")) status = "Отримання файлів з Workshop...";
+            
+            document.getElementById('status').innerText = status;
         }
     </script>
+
 </body>
 </html>
