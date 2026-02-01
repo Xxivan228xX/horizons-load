@@ -4,81 +4,144 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Arial', sans-serif; color: white; }
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap');
+
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Roboto', sans-serif; color: white; }
         
-        /* Фон з наближенням */
+        /* 1. Живий арт + Overlay (Бліки) */
+        .background-wrapper {
+            position: fixed; width: 100%; height: 100%;
+            z-index: 1; overflow: hidden;
+        }
         .background {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            width: 100%; height: 100%;
             background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
             background-size: cover; background-position: center;
-            animation: kenburns 30s infinite alternate ease-in-out;
-            z-index: 1;
+            animation: kenburns 40s infinite alternate ease-in-out;
         }
-        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.12); } }
+        /* Ефект бліку/плівки */
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.03) 0%, transparent 50%, rgba(255,255,255,0.03) 100%);
+            pointer-events: none; z-index: 2;
+            animation: flare 10s infinite linear;
+        }
+
+        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.15); } }
+        @keyframes flare { 0% { opacity: 0.3; } 50% { opacity: 0.6; } 100% { opacity: 0.3; } }
 
         .vignette {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
-            z-index: 2; pointer-events: none;
+            z-index: 3; pointer-events: none;
         }
 
-        /* КНОПКИ ПРАВОРУЧ */
+        /* 2. Картка вітання (Steam Data) */
+        .player-card {
+            position: fixed; top: 30px; left: 40px;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);
+            padding: 10px 20px; border-radius: 50px 15px 15px 50px;
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            display: flex; align-items: center; z-index: 10;
+        }
+        .player-card img {
+            width: 50px; height: 50px; border-radius: 50%;
+            border: 2px solid #ffcc00; box-shadow: 0 0 10px #ffcc00; margin-right: 15px;
+        }
+        .player-info span { display: block; font-size: 14px; font-weight: bold; color: #ffcc00; }
+        .player-info p { margin: 0; font-size: 11px; opacity: 0.8; text-transform: uppercase; }
+
+        /* 3. Слайдер новин (Зліва знизу) */
+        .news-slider {
+            position: fixed; bottom: 120px; left: 40px;
+            width: 300px; background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px); border-left: 4px solid #ffcc00;
+            padding: 15px; z-index: 10;
+        }
+        .news-header { font-size: 10px; letter-spacing: 2px; color: #ffcc00; margin-bottom: 5px; text-transform: uppercase; }
+        .news-content { font-size: 14px; line-height: 1.4; transition: 0.5s; }
+
+        /* Соціальні кнопки (Праворуч) */
         .social-sidebar {
             position: fixed; right: 40px; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 20px; z-index: 100;
+            display: flex; flex-direction: column; gap: 15px; z-index: 100;
         }
-
         .social-btn {
-            width: 55px; height: 55px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 204, 0, 0.4);
-            border-radius: 12px;
+            width: 50px; height: 50px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            color: white; text-decoration: none; font-size: 24px;
-            transition: 0.3s;
+            color: white; text-decoration: none; font-size: 20px; transition: 0.3s;
         }
-        .social-btn:hover { transform: scale(1.1); border-color: #ffcc00; background: rgba(0,0,0,0.8); }
+        .social-btn:hover { border-color: #ffcc00; transform: translateX(-5px); }
 
-        /* Верхня панель (як на твоїх фото) */
-        .top-panel {
-            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px);
-            padding: 12px 35px; border-radius: 15px; border: 1px solid rgba(255, 204, 0, 0.3);
-            z-index: 10; text-align: center;
-        }
-        .online-count { font-size: 24px; font-weight: bold; color: #ffcc00; display: block; }
-        .dev-status { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8; }
-
-        .tips { position: fixed; bottom: 120px; width: 100%; text-align: center; z-index: 10; font-style: italic; opacity: 0.8; }
-        .progress-bg { position: fixed; bottom: 50px; left: 15%; width: 70%; height: 3px; background: rgba(255,255,255,0.1); z-index: 10; }
-        .progress-bar { width: 30%; height: 100%; background: #ffcc00; box-shadow: 0 0 10px #ffcc00; }
+        /* Прогрес бар та Онлайн */
+        .bottom-info { position: fixed; bottom: 40px; width: 100%; text-align: center; z-index: 10; }
+        .online-text { font-family: 'Oswald', sans-serif; font-size: 20px; color: #ffcc00; margin-bottom: 10px; display: block; }
+        .bar-bg { width: 60%; height: 3px; background: rgba(255,255,255,0.1); margin: 0 auto; overflow: hidden; }
+        .bar-fill { width: 20%; height: 100%; background: #ffcc00; box-shadow: 0 0 15px #ffcc00; transition: 0.5s; }
     </style>
 </head>
 <body>
-    <div class="background"></div>
+    <div class="background-wrapper">
+        <div class="background"></div>
+        <div class="overlay"></div>
+    </div>
     <div class="vignette"></div>
 
+    <div class="player-card">
+        <img id="avatar" src="https://i.imgur.com/86n79N9.png" alt="Avatar">
+        <div class="player-info">
+            <span id="username">ЗАВАНТАЖЕННЯ...</span>
+            <p>Вітаємо на HorizonsRP!</p>
+        </div>
+    </div>
+
     <div class="social-sidebar">
-        <a href="https://t.me/horizons_rp" class="social-btn" title="Telegram">
-            <i class="fa-brands fa-telegram"></i>
-        </a>
-        <a href="https://discord.gg/horizonsrp" class="social-btn" title="Discord">
-            <i class="fa-brands fa-discord"></i>
-        </a>
+        <a href="https://t.me/+uv45IPWPmV9lZjJi" class="social-btn"><i class="fa-brands fa-telegram"></i></a>
+        <a href="https://discord.gg/zBCHEpEf" class="social-btn"><i class="fa-brands fa-discord"></i></a>
     </div>
 
-    <div class="top-panel">
-        <span class="online-count" id="slots">0 / 64 ГРАВЦІВ</span>
-        <span class="dev-status">Сервер у розробці • HorizonsRP</span>
+    <div class="news-slider">
+        <div class="news-header">Новини проекту</div>
+        <div id="news" class="news-content">Підключення до бази даних...</div>
     </div>
 
-    <div class="tips">Підготовка до гри...</div>
-    <div class="progress-bg"><div class="progress-bar"></div></div>
+    <div class="bottom-info">
+        <span class="online-text" id="slots">0 / 64 ГРАВЦІВ ОНЛАЙН</span>
+        <div class="bar-bg"><div class="bar-fill" id="bar"></div></div>
+    </div>
 
     <script>
+        // Слайдер новин
+        const newsItems = [
+            "Додано нову систему автосалонів 🚗",
+            "Вже готово 80% мапи проекту 🗺️",
+            "Відкриття зовсім скоро! Слідкуйте за новинами ⚡",
+            "Нова система фракцій вже в розробці 🚔"
+        ];
+        let newsIdx = 0;
+        setInterval(() => {
+            newsIdx = (newsIdx + 1) % newsItems.length;
+            document.getElementById('news').style.opacity = 0;
+            setTimeout(() => {
+                document.getElementById('news').innerText = newsItems[newsIdx];
+                document.getElementById('news').style.opacity = 1;
+            }, 500);
+        }, 5000);
+
+        // Дані з GMod
         function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
-            document.getElementById('slots').innerText = "0 / " + maxplayers + " ГРАВЦІВ";
+            document.getElementById('slots').innerText = "0 / " + maxplayers + " ГРАВЦІВ ОНЛАЙН";
+            
+            // Якщо є можливість, отримуємо нік (SteamID вже доступний)
+            if(steamid) {
+                document.getElementById('username').innerText = "ГРАВЕЦЬ " + steamid;
+            }
+        }
+
+        function SetStatusChanged(status) {
+            if(status.includes("Workshop")) document.getElementById('bar').style.width = "40%";
+            if(status.includes("Sending")) document.getElementById('bar').style.width = "95%";
         }
     </script>
 </body>
