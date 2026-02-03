@@ -2,13 +2,14 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
+    <title>HorizonsRP Loading Screen</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap');
 
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; font-family: 'Roboto', sans-serif; color: white; }
         
-        /* Фон та ефекти */
+        /* Фон */
         .background-wrapper { position: fixed; width: 100%; height: 100%; z-index: 1; overflow: hidden; }
         .background {
             width: 100%; height: 100%;
@@ -16,13 +17,7 @@
             background-size: cover; background-position: center;
             animation: kenburns 40s infinite alternate ease-in-out;
         }
-        .overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, rgba(255,255,255,0.02) 0%, transparent 50%, rgba(255,255,255,0.02) 100%);
-            pointer-events: none; z-index: 2; animation: flare 8s infinite linear;
-        }
-        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.15); } }
-        @keyframes flare { 0% { opacity: 0.2; } 50% { opacity: 0.5; } 100% { opacity: 0.2; } }
+        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.1); } }
 
         .vignette {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -30,7 +25,7 @@
             z-index: 3; pointer-events: none;
         }
 
-        /* КАРТКА ГРАВЦЯ З НОВОЮ ІКОНКОЮ */
+        /* Картка гравця (Зліва) */
         .player-card {
             position: fixed; top: 30px; left: 40px;
             background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(12px);
@@ -38,102 +33,91 @@
             border: 1px solid rgba(255, 204, 0, 0.4);
             display: flex; align-items: center; z-index: 10;
         }
-        .hrp-icon {
-            width: 65px; height: 65px; border-radius: 50%;
-            border: 2px solid #ffcc00; 
-            box-shadow: 0 0 20px rgba(255, 102, 0, 0.6); 
-            margin-right: 15px;
-            animation: icon-pulse 2s infinite ease-in-out;
-        }
-        @keyframes icon-pulse {
-            0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
-            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 204, 0, 0.8); }
-            100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 102, 0, 0.5); }
+        .hrp-icon { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ffcc00; margin-right: 15px; box-shadow: 0 0 15px rgba(255, 204, 0, 0.5); }
+
+        /* ОНЛАЙН (Справа зверху) */
+        .online-card {
+            position: fixed; top: 30px; right: 40px;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(12px);
+            padding: 15px 30px; border-radius: 20px;
+            border: 1px solid rgba(255, 204, 0, 0.4);
+            z-index: 10; text-align: center; min-width: 140px;
         }
 
-        /* Соцмережі */
-        .social-sidebar { position: fixed; right: 40px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 15px; z-index: 100; }
-        .social-btn { width: 55px; height: 55px; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 204, 0, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; font-size: 22px; transition: 0.4s; }
-        .social-btn:hover { border-color: #ffcc00; transform: scale(1.1); }
+        /* СОЦМЕРЕЖІ */
+        .social-sidebar { 
+            position: fixed; right: 40px; top: 50%; 
+            transform: translateY(-50%); 
+            display: flex; flex-direction: column; gap: 15px; z-index: 9999; 
+        }
+        .social-btn { 
+            width: 55px; height: 55px; background: rgba(0, 0, 0, 0.85); 
+            border: 1px solid rgba(255, 204, 0, 0.3); border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; 
+            color: white; text-decoration: none; font-size: 24px; transition: 0.3s;
+            cursor: pointer; pointer-events: auto;
+        }
+        .social-btn:hover { border-color: #ffcc00; transform: scale(1.1); background: rgba(255, 204, 0, 0.1); }
 
         /* Новини */
-        .news-slider { position: fixed; bottom: 120px; left: 40px; width: 320px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); border-left: 4px solid #ffcc00; padding: 15px 20px; z-index: 10; }
-        
-        /* Прогрес */
-        .bottom-info { position: fixed; bottom: 40px; width: 100%; text-align: center; z-index: 10; }
-        .bar-bg { width: 65%; height: 3px; background: rgba(255,255,255,0.1); margin: 0 auto; border-radius: 5px; overflow: hidden; }
-        .bar-fill { width: 20%; height: 100%; background: #ffcc00; box-shadow: 0 0 20px #ffcc00; transition: 0.6s; }
+        .news-box { 
+            position: fixed; bottom: 40px; left: 40px; width: 320px; 
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); 
+            border-left: 4px solid #ffcc00; padding: 15px 20px; z-index: 10; 
+        }
     </style>
 </head>
 <body>
-    <div class="background-wrapper"><div class="background"></div><div class="overlay"></div></div>
+    <div class="background-wrapper"><div class="background"></div></div>
     <div class="vignette"></div>
 
     <div class="player-card">
-        <img class="hrp-icon" src="https://i.postimg.cc/Tw4RGXnD/Photos-vj7GXHEgd-O.png" alt="HRP Icon">
-        <div class="player-info">
-            <span id="username" style="color: #ffcc00; font-weight: bold; font-size: 16px; text-transform: uppercase;">ЗАВАНТАЖЕННЯ...</span>
-            <p style="font-size: 11px; opacity: 0.8; margin: 0; letter-spacing: 1px;">HorizonsRP • 2026</p>
+        <img class="hrp-icon" src="https://i.postimg.cc/Tw4RGXnD/Photos-vj7GXHEgd-O.png">
+        <div>
+            <div id="username" style="color: #ffcc00; font-weight: bold; text-transform: uppercase;">ЗАВАНТАЖЕННЯ...</div>
+            <div style="font-size: 11px; opacity: 0.7;">HorizonsRP • 2026</div>
         </div>
     </div>
 
+    <div class="online-card">
+        <div style="font-size: 10px; color: #ffcc00; letter-spacing: 1px; margin-bottom: 5px;">ГРАВЦІВ ОНЛАЙН</div>
+        <div id="slots" style="font-family: 'Oswald'; font-size: 24px; font-weight: bold;">0 / 64</div>
+    </div>
+
     <div class="social-sidebar">
-        <a href="https://t.me/+uv45IPWPmV9lZjJi" class="social-btn"><i class="fa-brands fa-telegram"></i></a>
-        <a href="https://discord.gg/zBCHEpEf" class="social-btn"><i class="fa-brands fa-discord"></i></a>
+        <a href="https://t.me/+uv45IPWPmV9lZjJi" target="_blank" class="social-btn"><i class="fa-brands fa-telegram"></i></a>
+        <a href="https://discord.gg/WvhW76AAan" target="_blank" class="social-btn"><i class="fa-brands fa-discord"></i></a>
     </div>
 
-    <div class="news-slider">
-        <div style="font-size: 10px; color: #ffcc00; margin-bottom: 5px; letter-spacing: 2px;">НОВИНИ ПРОЕКТУ</div>
-        <div id="news" style="font-size: 14px; opacity: 1; transition: 0.5s;">Система автосалонів готова на 100% 🚗</div>
-    </div>
-
-    <div class="bottom-info">
-        <span id="slots" style="font-family: 'Oswald'; font-size: 20px; color: #ffcc00; margin-bottom: 10px; display: block; letter-spacing: 2px;">0 / 64 ГРАВЦІВ</span>
-        <div class="bar-bg"><div class="bar-fill" id="bar"></div></div>
+    <div class="news-box">
+        <div style="font-size: 10px; color: #ffcc00; margin-bottom: 5px; letter-spacing: 1px;">НОВИНИ ПРОЕКТУ</div>
+        <div id="news" style="font-size: 14px; transition: 0.5s;">Підключення до сервера...</div>
     </div>
 
     <script>
-        // Функція для пошуку імені в URL
-        function getUsernameFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get('name');
+        function GameDetails(servername, serverurl, mapname, maxplayers, steamid) {
+            document.getElementById('slots').innerText = "0 / " + maxplayers;
+            if (steamid) document.getElementById('username').innerText = "ID: " + steamid;
         }
 
-        function GameDetails(servername, serverurl, mapname, maxplayers, steamid, gamemode) {
-            document.getElementById('slots').innerText = "0 / " + maxplayers + " ГРАВЦІВ";
-            
-            let name = getUsernameFromURL();
-            if (name && name !== "%n") {
-                document.getElementById('username').innerText = decodeURIComponent(name);
-            } else if (steamid) {
-                document.getElementById('username').innerText = "ID: " + steamid;
-            }
-        }
-
-        // Авто-слайдер новин
-        const news = [
-            "Система автосалонів готова на 100% 🚗",
-            "Вже готово 80% мапи проекту 🗺️",
+        const newsList = [
             "Нова система банд в розробці 🚔",
-            "Дякуємо, що ви з нами! HorizonsRP 2026 ⚡"
+            "Мапа проекту готова на 85% 🗺️",
+            "Приєднуйтесь до нашого Discord! ⚡",
+            "Дякуємо, що обрали HorizonsRP! 🌟"
         ];
-        let i = 0;
+
+        let currentIndex = 0;
+        const newsElement = document.getElementById('news');
+
         setInterval(() => {
-            const el = document.getElementById('news');
-            el.style.opacity = 0;
+            newsElement.style.opacity = 0;
             setTimeout(() => {
-                i = (i + 1) % news.length;
-                el.innerText = news[i];
-                el.style.opacity = 1;
+                currentIndex = (currentIndex + 1) % newsList.length;
+                newsElement.innerText = newsList[currentIndex];
+                newsElement.style.opacity = 1;
             }, 500);
         }, 5000);
-
-        // Оновлення прогрес-бару для GMod
-        function SetStatusChanged(status) {
-            const bar = document.getElementById('bar');
-            if (status.includes("Workshop")) bar.style.width = "40%";
-            if (status.includes("Sending")) bar.style.width = "95%";
-        }
     </script>
 </body>
 </html>
