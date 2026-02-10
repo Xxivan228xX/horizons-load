@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>HorizonsRP · Завантаження</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,318 +13,258 @@
 
   <style>
     :root {
-      --accent:     #ffcc00;
-      --accent-glow: rgba(255, 204, 0, 0.7);
-      --bg:         #0a0a0f;
-      --glass:      rgba(20, 20, 35, 0.38);
-      --blur:       blur(16px);
-      --border:     1px solid rgba(255, 204, 0, 0.18);
+      --accent: #ffcc00;
+      --accent-glow: rgba(255, 204, 0, 0.65);
+      --glass: rgba(15, 15, 25, 0.45);
+      --blur: blur(14px);
+      --border: 1px solid rgba(255, 204, 0, 0.22);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin:0; padding:0; box-sizing:border-box; }
 
     body, html {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: var(--bg);
+      background: #0a0a0f;
       color: #f0f0f5;
       font-family: 'Roboto Mono', monospace;
-      letter-spacing: 0.4px;
     }
 
-    /* ─── Фон + Ken Burns + легкий parallax ─── */
-    .bg-layer {
+    /* Фон */
+    .bg {
       position: fixed;
       inset: 0;
       background: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png') center/cover no-repeat;
-      transform: scale(1.05);
-      animation: kenburns 50s infinite alternate ease-in-out;
-      will-change: transform;
+      animation: kenburns 55s infinite alternate ease-in-out;
+      transform: scale(1.03);
+    }
+
+    @keyframes kenburns {
+      0%   { transform: scale(1.03) translate(0,0); }
+      100% { transform: scale(1.10) translate(-1.5%, 1.5%); }
     }
 
     .overlay {
       position: fixed;
       inset: 0;
-      background: linear-gradient(to bottom, rgba(10,10,15,0.4), rgba(10,10,15,0.75) 70%);
-      backdrop-filter: blur(3px);
+      background: radial-gradient(circle at 30% 70%, transparent 20%, rgba(10,10,20,0.85) 70%);
+      pointer-events: none;
       z-index: 1;
-      pointer-events: none;
     }
 
-    @keyframes kenburns {
-      0%   { transform: scale(1.05) translate(0, 0); }
-      100% { transform: scale(1.12) translate(-2%, 2%); }
-    }
-
-    /* ─── Неонова сітка (дуже легка) ─── */
-    .grid {
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,204,0,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,204,0,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      opacity: 0.5;
-      pointer-events: none;
-      z-index: 2;
-      animation: gridfade 18s infinite alternate ease-in-out;
-    }
-
-    @keyframes gridfade {
-      0%,100% { opacity: 0.35; }
-      50%     { opacity: 0.6; }
-    }
-
-    /* ─── Основний контент ─── */
-    .content {
+    /* Контент */
+    .container {
       position: relative;
       z-index: 10;
       height: 100vh;
-      padding: 3vh 5vw;
+      padding: 2.5vh 4vw;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
-    /* Player card ── ліворуч зверху */
-    .player-card {
+    /* Верхній рядок */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    /* Player card (ліворуч) */
+    .player {
       display: flex;
       align-items: center;
-      gap: 18px;
-      padding: 14px 28px 14px 18px;
+      gap: 16px;
       background: var(--glass);
       backdrop-filter: var(--blur);
       border: var(--border);
-      border-radius: 24px;
-      border-top-right-radius: 60px;
-      border-bottom-right-radius: 60px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.6),
-                  inset 0 0 0 1px rgba(255,204,0,0.12);
-      width: fit-content;
-      transition: all 0.4s ease;
+      border-radius: 999px;
+      padding: 10px 24px 10px 14px;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.6),
+                  inset 0 0 0 1px rgba(255,204,0,0.15);
     }
 
-    .player-card:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 16px 60px rgba(255,204,0,0.15);
-    }
-
-    .hrp-icon {
-      width: 72px;
-      height: 72px;
+    .avatar {
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       border: 3px solid var(--accent);
-      box-shadow: 0 0 24px var(--accent-glow);
+      box-shadow: 0 0 20px var(--accent-glow);
       object-fit: cover;
     }
 
-    .player-info strong {
+    .player-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #username {
       font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
+      font-size: 1.45rem;
+      font-weight: 700;
       color: var(--accent);
       text-shadow: 0 0 12px var(--accent-glow);
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
     }
 
     .player-info small {
       font-size: 0.78rem;
-      opacity: 0.6;
-      margin-top: 4px;
-      display: block;
+      opacity: 0.65;
+      margin-top: 3px;
     }
 
-    /* Онлайн ── праворуч зверху */
+    /* Онлайн (праворуч) */
     .online {
-      position: absolute;
-      top: 3vh;
-      right: 5vw;
       background: var(--glass);
       backdrop-filter: var(--blur);
       border: var(--border);
       border-radius: 16px;
-      padding: 16px 32px;
+      padding: 12px 26px;
       text-align: center;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
-      min-width: 160px;
+      min-width: 150px;
+      box-shadow: 0 6px 30px rgba(0,0,0,0.5);
     }
 
     .online small {
       font-size: 0.68rem;
       color: var(--accent);
-      letter-spacing: 1.2px;
-      opacity: 0.9;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
     }
 
-    .online .count {
+    #slots {
       font-family: 'Orbitron', sans-serif;
-      font-size: 2.1rem;
-      font-weight: 700;
+      font-size: 1.9rem;
+      font-weight: 900;
       color: white;
-      text-shadow: 0 0 20px var(--accent-glow);
+      text-shadow: 0 0 16px var(--accent-glow);
     }
 
-    /* Соціалка ── вертикальна права панель */
+    /* Соціалка (праворуч знизу / середина) */
     .social {
       position: fixed;
-      right: 4vw;
-      top: 50%;
-      transform: translateY(-50%);
+      right: 3.5vw;
+      bottom: 5vh;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 18px;
       z-index: 999;
     }
 
     .social a {
-      width: 58px;
-      height: 58px;
-      background: rgba(10,10,20,0.7);
-      border: 2px solid rgba(255,204,0,0.4);
-      border-radius: 18px;
+      width: 54px;
+      height: 54px;
+      background: rgba(10,10,20,0.75);
+      border: 2px solid rgba(255,204,0,0.35);
+      border-radius: 14px;
       color: white;
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       display: grid;
       place-items: center;
-      transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
     }
 
     .social a:hover {
-      transform: translateY(-8px) scale(1.15);
+      transform: translateY(-6px);
       border-color: var(--accent);
       background: rgba(255,204,0,0.12);
-      box-shadow: 0 0 30px rgba(255,204,0,0.45);
+      box-shadow: 0 0 25px rgba(255,204,0,0.4);
     }
 
-    /* Новини ── знизу зліва */
+    /* Новини (знизу зліва) */
     .news {
-      max-width: 380px;
+      max-width: 360px;
       background: var(--glass);
       backdrop-filter: var(--blur);
       border-left: 5px solid var(--accent);
-      border-radius: 0 16px 16px 0;
-      padding: 18px 28px;
-      box-shadow: 0 10px 50px rgba(0,0,0,0.6);
+      border-radius: 0 14px 14px 0;
+      padding: 14px 22px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.55);
     }
 
-    .news-header {
-      font-size: 0.72rem;
+    .news small {
+      font-size: 0.7rem;
       color: var(--accent);
-      letter-spacing: 1.6px;
-      margin-bottom: 8px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+      display: block;
+      margin-bottom: 6px;
     }
 
     #news-text {
-      font-size: 1.05rem;
-      line-height: 1.45;
-      opacity: 0.92;
+      font-size: 1rem;
+      line-height: 1.4;
       transition: opacity 0.6s ease;
-    }
-
-    /* Центрований лоадер (опціонально) */
-    .center-loader {
-      position: fixed;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      z-index: 5;
-      pointer-events: none;
-    }
-
-    .pulse {
-      width: 180px;
-      height: 180px;
-      border: 3px solid transparent;
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1.6s linear infinite, pulse-glow 3s ease-in-out infinite;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes pulse-glow {
-      0%,100% { box-shadow: 0 0 40px rgba(255,204,0,0.3); }
-      50%     { box-shadow: 0 0 90px rgba(255,204,0,0.7); }
     }
   </style>
 </head>
 <body>
 
-  <div class="bg-layer"></div>
+  <div class="bg"></div>
   <div class="overlay"></div>
-  <div class="grid"></div>
 
-  <div class="center-loader">
-    <div class="pulse"></div>
-  </div>
+  <div class="container">
 
-  <div class="content">
-
-    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-      <!-- Ліворуч -->
-      <div class="player-card">
-        <img class="hrp-icon" src="https://i.postimg.cc/Tw4RGXnD/Photos-vj7GXHEgd-O.png" alt="HorizonsRP">
+    <div class="top-bar">
+      <div class="player">
+        <img class="avatar" src="https://i.postimg.cc/Tw4RGXnD/Photos-vj7GXHEgd-O.png" alt="HRP">
         <div class="player-info">
-          <strong id="username">ЗАВАНТАЖЕННЯ...</strong>
+          <div id="username">ЗАВАНТАЖЕННЯ...</div>
           <small>HorizonsRP • 2026</small>
         </div>
       </div>
 
-      <!-- Праворуч онлайн -->
       <div class="online">
         <small>ГРАВЦІВ ОНЛАЙН</small>
-        <div class="count" id="slots">0 / 64</div>
+        <div id="slots">0 / 64</div>
       </div>
     </div>
 
-    <!-- Соціалка -->
     <div class="social">
       <a href="https://t.me/+uv45IPWPmV9lZjJi" target="_blank"><i class="fab fa-telegram"></i></a>
       <a href="https://discord.gg/WvhW76AAan" target="_blank"><i class="fab fa-discord"></i></a>
     </div>
 
-    <!-- Новини -->
     <div class="news">
-      <div class="news-header">Новини проекту</div>
+      <small>НОВИНИ ПРОЕКТУ</small>
       <div id="news-text">Підключення до сервера...</div>
     </div>
 
   </div>
 
   <script>
-    // GMod API
+    // GMod callback
     function GameDetails(servername, serverurl, mapname, maxplayers, steamid) {
       document.getElementById('slots').textContent = `0 / ${maxplayers}`;
-      if (steamid) {
+      if (steamid && steamid !== "0") {
         document.getElementById('username').textContent = steamid;
       }
     }
 
-    // Слайдер новин
-    const newsItems = [
+    // Новини слайдер
+    const news = [
       "Нова система банд вже скоро 🚨",
-      "Мапа завершена на 92% 🗺️",
+      "Мапа готова на 92% 🗺️",
       "Запрошуємо в Discord — там гарячіше ⚡",
       "HorizonsRP — твій 2026 рік 🌌"
     ];
 
-    let idx = 0;
-    const newsEl = document.getElementById('news-text');
+    let i = 0;
+    const el = document.getElementById('news-text');
 
     setInterval(() => {
-      newsEl.style.opacity = 0;
+      el.style.opacity = '0';
       setTimeout(() => {
-        idx = (idx + 1) % newsItems.length;
-        newsEl.textContent = newsItems[idx];
-        newsEl.style.opacity = 1;
-      }, 600);
-    }, 5200);
+        i = (i + 1) % news.length;
+        el.textContent = news[i];
+        el.style.opacity = '1';
+      }, 700);
+    }, 5500);
   </script>
 </body>
 </html>
