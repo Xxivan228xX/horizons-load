@@ -1,262 +1,137 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>HorizonsRP · Завантаження</title>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --accent: #ffcc00;
-      --glow: rgba(255, 204, 0, 0.6);
-      --glass: rgba(12, 12, 22, 0.55);
-      --blur: blur(12px);
-    }
-
-    * { margin:0; padding:0; box-sizing:border-box; }
-
-    body, html {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #05050a;
-      color: #eee;
-      font-family: 'Roboto Mono', monospace;
-      image-rendering: crisp-edges; /* для GMod старого Chromium */
-    }
-
-    .bg {
-      position: fixed;
-      inset: 0;
-      background: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png') center/cover no-repeat fixed;
-      z-index: 1;
-    }
-
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at 40% 60%, transparent 15%, rgba(5,5,15,0.9) 65%);
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .content {
-      position: relative;
-      z-index: 10;
-      width: 100%;
-      height: 100%;
-      padding: 2% 3%;
-    }
-
-    /* Top row */
-    .top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    /* Player card – зроблено як на скріні (овал + градієнт) */
-    .player-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 8px 24px 8px 12px;
-      background: linear-gradient(135deg, rgba(20,20,35,0.7), rgba(10,10,20,0.7));
-      backdrop-filter: var(--blur);
-      border: 1px solid rgba(255,204,0,0.3);
-      border-radius: 60px;
-      box-shadow: 0 0 30px rgba(255,204,0,0.25);
-      position: relative;
-    }
-
-    .player-card::before {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: 60px;
-      background: conic-gradient(from 90deg at 50% 50%, transparent 30%, var(--accent) 60%, transparent 90%);
-      opacity: 0.4;
-      pointer-events: none;
-    }
-
-    .avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: 3px solid var(--accent);
-      box-shadow: 0 0 18px var(--glow);
-    }
-
-    #username {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.1rem, 2.8vw, 1.4rem);
-      font-weight: 700;
-      color: var(--accent);
-      text-shadow: 0 0 10px var(--glow);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .player-card small {
-      font-size: 0.75rem;
-      opacity: 0.7;
-    }
-
-    /* Онлайн */
-    .online {
-      background: var(--glass);
-      backdrop-filter: var(--blur);
-      border: 1px solid rgba(255,204,0,0.25);
-      border-radius: 12px;
-      padding: 10px 20px;
-      text-align: center;
-      min-width: 140px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.6);
-    }
-
-    .online small {
-      font-size: 0.65rem;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-    }
-
-    #slots {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      font-weight: 900;
-      color: #fff;
-      text-shadow: 0 0 14px var(--glow);
-    }
-
-    /* Новини – знизу ліворуч */
-    .news {
-      position: absolute;
-      bottom: 4%;
-      left: 3%;
-      max-width: 380px;
-      background: var(--glass);
-      backdrop-filter: var(--blur);
-      border-left: 4px solid var(--accent);
-      border-radius: 0 10px 10px 0;
-      padding: 12px 20px;
-      box-shadow: 0 8px 35px rgba(0,0,0,0.5);
-    }
-
-    .news small {
-      font-size: 0.68rem;
-      color: var(--accent);
-      letter-spacing: 1.3px;
-      text-transform: uppercase;
-    }
-
-    #news-text {
-      font-size: 0.98rem;
-      line-height: 1.35;
-      transition: opacity 0.7s;
-    }
-
-    /* Соцмережі – праворуч знизу, як на скріні */
-    .social {
-      position: absolute;
-      bottom: 5%;
-      right: 4%;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      z-index: 100;
-    }
-
-    .social a {
-      width: 52px;
-      height: 52px;
-      background: rgba(8,8,18,0.8);
-      border: 2px solid rgba(255,204,0,0.4);
-      border-radius: 12px;
-      color: #fff;
-      font-size: 1.45rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s;
-      pointer-events: auto !important;
-      cursor: pointer !important;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-    }
-
-    .social a:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent);
-      box-shadow: 0 0 22px rgba(255,204,0,0.45);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@300;400&display=swap');
+        
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: #000;
+            font-family: 'Roboto', sans-serif; color: white;
+        }
+       
+        /* ФОН */
+        .background-wrapper {
+            position: fixed; width: 100%; height: 100%;
+            z-index: 1; overflow: hidden; pointer-events: none;
+        }
+        .background {
+            width: 100%; height: 100%;
+            background-image: url('https://i.postimg.cc/SshJqB3t/Gemini-Generated-Image-ehrpygehrpygehrp.png');
+            background-size: cover; background-position: center;
+            animation: kenburns 40s infinite alternate ease-in-out;
+        }
+        @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.1); } }
+        
+        /* ВІНЬЄТКА - тепер не заважає клікам */
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.85) 100%);
+            z-index: 2; /* нижче за всі інтерактивні елементи */
+            pointer-events: none;
+        }
+        
+        /* КАРТКА ГРАВЦЯ */
+        .player-card {
+            position: fixed; top: 30px; left: 40px;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(12px);
+            padding: 10px 25px 10px 10px; border-radius: 60px 20px 20px 60px;
+            border: 1px solid rgba(255, 204, 0, 0.4);
+            display: flex; align-items: center; z-index: 10;
+        }
+        .hrp-icon { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ffcc00; margin-right: 15px; }
+        
+        /* ОНЛАЙН СПРАВА */
+        .online-card {
+            position: fixed; top: 30px; right: 40px;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(12px);
+            padding: 15px 30px; border-radius: 20px;
+            border: 1px solid rgba(255, 204, 0, 0.4);
+            z-index: 10; text-align: center; min-width: 140px;
+        }
+        
+        /* КНОПКИ СОЦМЕРЕЖ - максимальний пріоритет */
+        .social-sidebar {
+            position: fixed; right: 40px; top: 50%;
+            transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 15px;
+            z-index: 10000; /* дуже високо */
+        }
+        .social-btn {
+            width: 60px; height: 60px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid rgba(255, 204, 0, 0.5);
+            border-radius: 15px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 28px;
+            transition: 0.2s;
+            cursor: pointer !important;
+            pointer-events: auto !important; /* критично важливо */
+            text-decoration: none;
+        }
+        .social-btn:hover {
+            border-color: #ffcc00;
+            transform: scale(1.1);
+            background: rgba(255, 204, 0, 0.3);
+        }
+        
+        /* НОВИНИ */
+        .news-box {
+            position: fixed; bottom: 40px; left: 40px; width: 320px;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);
+            border-left: 4px solid #ffcc00; padding: 15px 20px; z-index: 10;
+        }
+    </style>
 </head>
 <body>
-
-  <div class="bg"></div>
-  <div class="overlay"></div>
-
-  <div class="content">
-
-    <div class="top">
-      <div class="player-card">
-        <img class="avatar" src="https://i.postimg.cc/Tw4RGXnD/Photos-vj7GXHEgd-O.png" alt="HRP">
+    <div class="background-wrapper"><div class="background"></div></div>
+    <div class="vignette"></div>
+    
+    <div class="player-card">
+        <img class="hrp-icon" src="https://i.postimg.cc/Tw4RGXnD/Photos-vj7GXHEgd-O.png">
         <div>
-          <div id="username">ЗАВАНТАЖЕННЯ...</div>
-          <small>HorizonsRP • 2026</small>
+            <div id="username" style="color: #ffcc00; font-weight: bold; text-transform: uppercase;">ЗАВАНТАЖЕННЯ...</div>
+            <div style="font-size: 11px; opacity: 0.7;">HorizonsRP • 2026</div>
         </div>
-      </div>
-
-      <div class="online">
-        <small>ГРАВЦІВ ОНЛАЙН</small>
-        <div id="slots">0 / 16</div>
-      </div>
+    </div>
+    
+    <div class="online-card">
+        <div style="font-size: 10px; color: #ffcc00; letter-spacing: 1px; margin-bottom: 5px;">ГРАВЦІВ ОНЛАЙН</div>
+        <div id="slots" style="font-family: 'Oswald'; font-size: 24px; font-weight: bold;">0 / 64</div>
+    </div>
+    
+    <div class="social-sidebar">
+        <a href="https://t.me/+uv45IPWPmV9lZjJi" class="social-btn" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-telegram"></i>
+        </a>
+        <a href="https://discord.gg/WvhW76AAan" class="social-btn" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-discord"></i>
+        </a>
+    </div>
+    
+    <div class="news-box">
+        <div style="font-size: 10px; color: #ffcc00; margin-bottom: 5px; letter-spacing: 1px;">НОВИНИ ПРОЕКТУ</div>
+        <div id="news" style="font-size: 14px;">Очікування...</div>
     </div>
 
-    <div class="news">
-      <small>НОВИНИ ПРОЕКТУ</small>
-      <div id="news-text">Запрошуємо в Discord – там гарячіше ⚡</div>
-    </div>
-
-    <div class="social">
-      <a href="https://t.me/+uv45IPWPmV9lZjJi" target="_blank"><i class="fab fa-telegram"></i></a>
-      <a href="https://discord.gg/WvhW76AAan" target="_blank"><i class="fab fa-discord"></i></a>
-    </div>
-
-  </div>
-
-  <script>
-    function GameDetails(servername, serverurl, mapname, maxplayers, steamid) {
-      document.getElementById('slots').textContent = `0 / ${maxplayers}`;
-      if (steamid && steamid.length > 5) {
-        document.getElementById('username').textContent = steamid;
-      }
-    }
-
-    // Новини (можна додати більше)
-    const newsList = [
-      "Запрошуємо в Discord – там гарячіше ⚡",
-      "Нова система банд вже скоро 🚨",
-      "Мапа на 92% готова 🗺️",
-      "HorizonsRP 2026 – приєднуйся! 🌌"
-    ];
-    let idx = 0;
-    const newsEl = document.getElementById('news-text');
-
-    setInterval(() => {
-      newsEl.style.opacity = '0';
-      setTimeout(() => {
-        idx = (idx + 1) % newsList.length;
-        newsEl.textContent = newsList[idx];
-        newsEl.style.opacity = '1';
-      }, 800);
-    }, 6000);
-  </script>
+    <script>
+        function GameDetails(servername, serverurl, mapname, maxplayers, steamid) {
+            document.getElementById('slots').innerText = "0 / " + maxplayers;
+            if (steamid) document.getElementById('username').innerText = "ID: " + steamid;
+        }
+        
+        const newsList = [
+            "Нова система банд в розробці 🚔",
+            "Мапа проекту готова на 85% 🗺️",
+            "Приєднуйтесь до нашого Discord! ⚡"
+        ];
+        let i = 0;
+        setInterval(() => {
+            i = (i + 1) % newsList.length;
+            document.getElementById('news').innerText = newsList[i];
+        }, 5000);
+    </script>
 </body>
 </html>
